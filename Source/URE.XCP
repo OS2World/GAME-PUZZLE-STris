@@ -1,0 +1,42 @@
+URE.XCP : 15.50  05-Nov-95
+Access violation occurred at CS:EIP = 0x005B:00029D20
+Invalid Read Access occurred at 0x0053:110D2000
+
+Register dump:
+EAX = 0x00790030    EBX = 0x006E0F1C    ECX = 0x001B7BF3    EDX = 0x00000000
+EBP = 0x001211C8    EDI = 0x00791F80    ESI = 0x110D2000    ESP = 0x001211B4
+ CS = 0x005B         DS = 0x0053         ES = 0x0053         FS = 0x150B
+ GS = 0x0000         SS = 0x0053
+
+Mar-26-1996 15:20:29.57
+PID: 174  TID: 1
+
+Component: URE.Exe
+Module: @(#)create.c:2.85 Function: pszMallocText
+Function start: 0x00029CF8
+Function end:   0x00029D50
+
+Tracing back through stack
+Module: @(#)create.c:2.85 Function: PasteWindow
+Function start: 0x00027CA7
+Function end:   0x00029CF8
+
+Tracing back through stack
+Module: @(#)designercommand.c:2.212 Function: EditCommand
+Function start: 0x0003CA25
+Function end:   0x00041330
+
+Tracing back through stack
+Module: @(#)designerwnd.c:2.83 Function: DesignerWndProc
+Function start: 0x00043AB0
+Function end:   0x00046571
+
+Tracing back through stack
+Module: @(#)designer.c:2.68 Function: main
+Function start: 0x000101B6
+Function end:   0x00010E60
+
+main( )                     : 0x000101B6
+DesignerExceptionHandler( ) : 0x000B8888
+-----
+

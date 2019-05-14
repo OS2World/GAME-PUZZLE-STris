@@ -1,0 +1,320 @@
+**********************************************************************
+*  See the Software Installer Reference for information on creating a
+*  package file.
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Service level
+*---------------------------------------------------------------------
+SERVICELEVEL
+   LEVEL = '000000'
+
+
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Include 1 DISK entry for each diskette needed.
+*
+*  The following changes are required:
+*  - Change "<Product Name>" in the each NAME keyword to your product
+*    name.
+*  - Set each VOLUME keyword to a unique value.
+*---------------------------------------------------------------------
+DISK
+   NAME = 'STris V1.32 - Diskette 1',
+   VOLUME = 'PROD001'
+
+
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Default directories
+*---------------------------------------------------------------------
+PATH
+   FILE = 'C:/STRIS',
+   FILELABEL = 'Installation directory'
+
+
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Exit to define your product folder's object ID.
+*
+*  The following changes are required:
+*  - Set variable FOLDERID to your folder's object ID; be sure to make
+*    the value sufficiently unique; do not use "PRODFLDR".
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN = 'ALWAYS',
+   EXITIGNOREERR = 'NO',
+   EXIT = 'SETVAR FOLDERID=STRISFLDR'
+
+
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  This component creates a folder on the desktop.  You must create
+*  the folder in a hidden component to ensure that deleting your
+*  product does not delete the folder before the objects within the
+*  folder are deleted.
+*---------------------------------------------------------------------
+COMPONENT
+   NAME = 'INSFIRST',
+   ID = 'INSFIRST',
+   DISPLAY = 'NO',
+   SIZE = '810000',
+   SHARED = 'NO',
+   DELETE = 'YES'
+
+*---------------------------------------------------------------------
+*  Include a FILE entry to install the catalog file.
+*
+*  The following changes are required:
+*  - Change the SOURCE and PWS keywords to the name of your catalog
+*    file.
+*---------------------------------------------------------------------
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   SOURCE = 'DRIVE:STRIS132.ICF',
+   VOLUME = 'PROD001',
+   PWS = 'STRIS132.ICF',
+   DATE = '951230',
+   TIME = '1118',
+   SIZE = '2269'
+
+*---------------------------------------------------------------------
+*  Set variable CATALOG to be the name of the catalog file;
+*  the variable is used in EPFISINC.PKG.
+*
+*  The following changes are required:
+*  - Change "CATALOG.ICF" in the EXIT keyword to the name of your
+*    catalog file.
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN = 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR = 'NO',
+   EXIT = 'SETVAR CATALOG=STRIS132.ICF'
+
+*---------------------------------------------------------------------
+*  Include a FILE entry to install the description file.
+*
+*  The following changes are required:
+*  - Change the SOURCE and PWS keywords to the name of your
+*    description file.
+*---------------------------------------------------------------------
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   SOURCE = 'DRIVE:STRIS132.DSC',
+   VOLUME = 'PROD001',
+   PWS = 'STRIS132.DSC',
+   DATE = '951230',
+   TIME = '1118',
+   SIZE = '129'
+
+*---------------------------------------------------------------------
+*  Create your product's folder on the desktop.
+*
+*  The following changes are required:
+*  - Change "<Product Name>" in the EXIT keyword to your product name.
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN = 'INSTALL || UPDATE',
+   EXITIGNOREERR = 'NO',
+   EXIT = 'CREATEWPSOBJECT WPFolder "STris V1.32"                   <WP_DESKTOP> R                   "OBJECTID=<%FOLDERID%>;"'
+
+*---------------------------------------------------------------------
+*  The included package file will install and register the
+*  Installation Utility.  You do not need to make any changes to
+*  EPFISINC.PKG.
+*---------------------------------------------------------------------
+INCLUDE
+   NAME = 'DRIVE:EPFISINC.PKG'
+
+
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Include 1 COMPONENT entry for each component.
+*
+*  The following changes are required:
+*  - Change "Component 1" in the NAME keyword to the name of the
+*    component.
+*  - Describe the component in the DESCRIPTION keyword.
+*
+*  The component must require at least the INSFIRST and DELLAST
+*  components.
+*---------------------------------------------------------------------
+COMPONENT
+   NAME = 'STris',
+   ID = 'COMP1',
+   REQUIRES = 'INSFIRST DELLAST',
+   DISPLAY = 'YES',
+   DESCRIPTION = 'STris program and all necessary data',
+   SIZE = '110000',
+   SHARED = 'NO',
+   DELETE = 'YES'
+
+*---------------------------------------------------------------------
+*  Include 1 FILE entry for each file in the component.
+*
+*  The following changes are required:
+*  - Change the SOURCE and PWS keywords to the name of the file to
+*    install.
+*---------------------------------------------------------------------
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:STRIS.EX_',
+   VOLUME = 'PROD001',
+   PWS = 'STRIS.EXE',
+   DATE = '951018',
+   TIME = '1808',
+   SIZE = '61453'
+
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:STRIS.HL_',
+   VOLUME = 'PROD001',
+   PWS = 'STRIS.HLP',
+   DATE = '950930',
+   TIME = '1551',
+   SIZE = '12588'
+
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:STRIS.IN_',
+   VOLUME = 'PROD001',
+   PWS = 'STRIS.INI',
+   DATE = '950803',
+   TIME = '1415',
+   SIZE = '220'
+
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:STRIS.HS_',
+   VOLUME = 'PROD001',
+   PWS = 'STRIS.HSC',
+   DATE = '950804',
+   TIME = '0926',
+   SIZE = '448'
+
+
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:DING.WA_',
+   VOLUME = 'PROD001',
+   PWS = 'DING.WAV',
+   DATE = '940926',
+   TIME = '1514',
+   SIZE = '11598'
+
+
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:GLASS.WA_',
+   VOLUME = 'PROD001',
+   PWS = 'GLASS.WAV',
+   DATE = '940926',
+   TIME = '1515',
+   SIZE = '11082'
+
+
+FILE
+   WHEN = 'OUTOFDATE',
+   REPLACEINUSE = 'I U D R',
+   UNPACK = 'YES',
+   SOURCE = 'DRIVE:BREAKIT.WA_',
+   VOLUME = 'PROD001',
+   PWS = 'BREAKIT.WAV',
+   DATE = '940926',
+   TIME = '1514',
+   SIZE = '8186'
+
+
+
+
+*---------------------------------------------------------------------
+*  Create a program object in the product folder.
+*
+*  The following changes are required:
+*  - Change "COMP1A" in the EXIT keyword to the name of the object.
+*  - Change "COMP1A.EXE" in the EXIT keyword after EXENAME to the
+*    name of the program to run.
+*  - Change "[]" in the EXIT keyword after PARAMETERS to any
+*    parameters required to run the object; if no parameters are
+*    required, delete "PARAMETERS=[];" from the EXIT keyword.
+*  - Change "COMP1A" in the EXIT keyword after OBJECTID to the
+*    program's object ID; be sure to make the value sufficiently
+*    unique; the value must be enclosed in "<>" characters; do not use
+*    "COMP1A" or the value of the FOLDERID variable.
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN = 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR = 'NO',
+   EXIT = 'CREATEWPSOBJECT WPProgram "STris"                   <%FOLDERID%> R                   "EXENAME=%EPFIFILEDIR%//STris.EXE;STARTUPDIR=%EPFIFILEDIR%;OBJECTID=<STRIS132ID>;"'
+
+*---------------------------------------------------------------------
+*  Delete the program object.
+*
+*  The following changes are required:
+*  - Change "COMP1A" in the EXIT keyword to the program's object ID;
+*    be sure to use the object ID that you gave the object when it was
+*    created in the previous FILE entry; the value must be enclosed in
+*    "<>" characters.
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN = 'DELETE',
+   EXITIGNOREERR = 'YES',
+   EXIT = 'DELETEWPSOBJECT <STRIS132ID>'
+
+
+
+*---------------------------------------------------------------------
+*  Another FILE entry.
+*
+*  The following changes are required:
+*  - Change the SOURCE and PWS keywords to the name of the file to
+*    install.
+*---------------------------------------------------------------------
+
+
+**********************************************************************
+
+*---------------------------------------------------------------------
+*  This component deletes the product folder; it must be the last
+*  COMPONENT entry in the package file.
+*
+*  No changes are required to any entry in this component.
+*---------------------------------------------------------------------
+COMPONENT
+   NAME = 'DELLAST',
+   ID = 'DELLAST',
+   DISPLAY = 'NO',
+   SIZE = '10000',
+   SHARED = 'NO',
+   DELETE = 'YES'
+
+FILE
+   EXITWHEN = 'DELETE',
+   EXITIGNOREERR = 'YES',
+   EXIT = 'DELETEWPSOBJECT <%FOLDERID%>'
+

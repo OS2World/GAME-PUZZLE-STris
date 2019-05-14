@@ -1,0 +1,30 @@
+echo Updating STris
+echo.
+
+echo Copying files...
+copy >NUL Help\STris.HLP .
+
+copy >NUL stris.exe Archive\STris.EXE
+copy >NUL stris.hlp Archive\STris.HLP
+copy >NUL *.WAV Archive\
+
+cd Archive
+
+echo Removing EAs...
+remEA Install.CMD
+remEA Read.Me
+remEA BreakIt.WAV
+remEA Ding.WAV
+remEA Glass.WAV
+
+echo Freshening archive...
+repack /exepack:2 Stris.EXE
+del /Q STris.BAK
+
+zip -f STrs_145.ZIP
+echo Update complete
+
+cd ..
+echo STris archive has been successfully created...
+
+

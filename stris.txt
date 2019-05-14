@@ -1,0 +1,48 @@
+Stris  1.45 - Author Rene Straub
+
+Last Code Update - 1996-Apr-20
+
+The Game Author is Rene Straub and can be contacted at: rene.straub@yetnet.ch
+This game has been released as Freeware-OpenSource. Check the source inside the source.zip file.
+
+Stris is a great Tetris clone for OS/2. Fully colored graphics with GUI.
+
+
+Visit OS2World Gaming Site for more games
+http://www.os2world.com/games
+Martin Iturbide
+martin@os2world.com
+
+
+
+-- STRIS-README-- STRIS-README-- STRIS-README-- STRIS-README-- STRIS-README
+
+
+IMPORTANT
+---------
+
+This is the readme  file for STris,  which should normally  be read *first*.
+Since no one usually bothers  to read this file, however, it merely contains
+this basic warning:
+
+You *must* have the OS/2 MMPM/2 extensions and support installed. This is an
+important  prerequisite  in order to provide  event sounds in the game,  and
+STris will complain with various  errors if the sound support is not present
+or properly installed on your system.
+
+More detailed information  can be found by referring to the online help from
+the STris menu.
+
+
+
+                               Have fun with STris
+
+
+                                            Ren‚ Straub
+                                            straub@crack.aare.ch
+
+
+
+-- STRIS-README-- STRIS-README-- STRIS-README-- STRIS-README-- STRIS-README --
+
+

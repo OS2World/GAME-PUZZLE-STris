@@ -1,0 +1,58 @@
+**********************************************************************
+*  See the Software Installer Reference for information on creating a
+*  catalog file.
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Define the contents of this catalog file.
+*
+*  The following changes are required:
+*  - Change "<Product Name>" in the NAME and DESCRIPTION keywords to
+*    your product name.
+*
+*  You may change the value of the DESCRIPTION keyword to be more
+*  descriptive.
+*---------------------------------------------------------------------
+CATALOG
+  NAME         = 'STris V1.32',
+  DESCRIPTION  = 'This catalog contains STris V1.32 .'
+
+
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+*  Include 1 PACKAGE entry for each product in the catalog.  You will
+*  usually only have 1 entry.
+*
+*  The following changes are required:
+*  - Change "<Product Name>" in the NAME keyword to your product name.
+*  - Change "0000-000" in the NUMBER keyword to your product number.
+*  - Change "0000" in the FEATURE keyword to your product feature.
+*  - Change "010100" in the VRM keyword to your product's version
+*    number.
+*  - Change "PACKAGE.PKG" in the PACKAGEFILE keyword to the name of
+*    the product's package file.
+*  - Change "DESCR.DSC" in the PKGDESCRFILE keyword to the name of
+*    the product's description file.
+*
+*  If the product does not have components, the following changes are
+*  required:
+*  - Change "2500000" in the SIZE keyword to number of byte required
+*    to install the product.
+*
+*  If you do not update the CONFIG.SYS during installation of the
+*  product, the following changes are required:
+*  - Change "YES" in the UPDATECONFIGSYS keyword to "NO".
+*---------------------------------------------------------------------
+PACKAGE
+  NAME            = 'STris V1.32',
+  NUMBER          = '8001-000',
+  FEATURE         = '0000',
+  VRM             = '010302',
+  PACKAGEFILE     = 'DRIVE: STRIS132.PKG',
+  PKGDESCRFILE    = 'DRIVE: STRIS132.DSC',
+  SIZE            = '250000',
+  UPDATECONFIGSYS = 'NO'
+

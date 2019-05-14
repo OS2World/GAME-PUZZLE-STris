@@ -1,0 +1,19 @@
+;******* STris  Module Definition File (.DEF) ********
+;
+;  The module definition file supplies extra information about the program
+;  module to the LINKER.
+
+NAME    STris   WINDOWAPI
+
+DESCRIPTION 'Straub's Tetris fÅr OS/2'
+
+STACKSIZE   8192
+HEAPSIZE    0
+
+PROTMODE
+
+DATA		SINGLE
+
+
+
+

@@ -1,0 +1,35 @@
+**********************************************************************
+*  See the Software Installer Reference for information on creating a
+*  response file.
+**********************************************************************
+
+
+*---------------------------------------------------------------------
+* Define the target directories.
+*---------------------------------------------------------------------
+FILE=C:\STRIS
+
+
+*---------------------------------------------------------------------
+* Include a COMP keyword for every component in the package file.
+*---------------------------------------------------------------------
+COMP=STris
+
+
+*---------------------------------------------------------------------
+* The following 4 keywords are required.  See the Software Installer
+* Reference for possible values.
+*---------------------------------------------------------------------
+CFGUPDATE=AUTO
+OVERWRITE=NO
+SAVEBACKUP=NO
+DELETEBACKUP=NO
+
+
+*---------------------------------------------------------------------
+* Add product-specific keywords after this comment.  The keywords are
+* needed to CID enable a user exit.
+*---------------------------------------------------------------------
+
+
+
