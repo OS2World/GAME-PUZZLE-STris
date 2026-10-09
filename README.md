@@ -3,6 +3,8 @@
 STris is a Tetris clone for the OS/2 Presentation Manager.
 Originally written by Rene Straub in 1995-1996 (version 1.45).
 
+![STris Screenshot](doc/STris.png)
+
 ## Version
 
 1.50
