@@ -1,0 +1,31 @@
+STris - Changelog
+=================
+
+1.50 (2026-10-09)
+- Ported from IBM VisualAge C++ to OpenWatcom 2.0 (wmake, wcc386, wlink, wrc,
+  wipfc); new project layout: src/, bin/, doc/, help/, legacy/
+- Released under the GNU GPL v3; the shareware registration was removed
+- New menus: Game / Options / Help, with the shortcuts Ctrl+N (new game,
+  ignored while a game runs), Ctrl+P (pause), Ctrl+Q (quit game), Ctrl+X
+  (exit), Ctrl+B (Background Run), Ctrl+F (Frame Controls)
+- Quit Game and Stop Game ask for confirmation and then wipe the playfield
+- 6 languages for the interface and the online help (English, Spanish, Dutch,
+  German, French, Italian), switchable at runtime; the language is saved
+- Online help rewritten, one help file per language (help\STris_xx.hlp)
+- New setting "Start with extra squares" (on by default, as in the original):
+  random squares at the bottom when a game starts - one row per Startlevel,
+  or 4 rows when Startlevel is 0
+- Sound is on by default, also when STris.cfg is created for the first time
+- Background Run: the game keeps running when the window is not active;
+  otherwise it pauses automatically
+- Frame Controls: hides the title bar and menu; the window resizes itself
+- Less flicker: only the playfield is redrawn while a piece falls
+- Settings are saved to STris.cfg (instead of the OS/2 profile); "Save
+  settings on exit" is on by default
+- Window title is just "STris"; the program icon is embedded in the exe
+- Standard About dialog and BLDLEVEL information
+
+1.45 (1996-04-20)
+- Last shareware release by Rene Straub (IBM VisualAge C++ build)
+- Tetris clone for OS/2 Presentation Manager
+- High-score table with name entry, configurable keys, online help, sound

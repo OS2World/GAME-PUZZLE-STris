@@ -1,0 +1,332 @@
+/*******************************************************************************
+*                                                                             *
+* STRIS.RC                                                                    *
+* -------                                                                    *
+*                                                                             *
+* Resource compiler file for STris.                                           *
+*                                                                             *
+* Modification History:                                                       *
+* ---------------------                                                       *
+*                                                                             *
+* 14.04.95  RHS  Created this file.                                          *
+* 22.04.95  RHS  1. Rework.                                                  *
+* 2026      OD2  Standardized menu structure (Game/Options/Detail/Language/  *
+*                Help), standard accelerators (Ctrl+N/P/Q/X/B/F),            *
+*                standard about dialog, BLDLEVEL record.                     *
+*                                                                             *
+********************************************************************************/
+
+#include <os2.h>
+#include "stris_id.h"
+#include "help.h"
+
+
+/*******************************************************************************
+* BLDLEVEL record (readable with bldlevel.exe / REXX bldlevel())
+*******************************************************************************/
+
+RCDATA ID_BLDLEVEL
+{
+    "@#Rene Straub:1.50#@##1## 09 Oct 2026 12:00:00      ARCAOS:::0::::@@STris for OS/2 - classic Tetris puzzle game"
+}
+
+
+/*******************************************************************************
+* Menu bar. The menu items are re-labelled at runtime (set_language) so the
+* texts here are only placeholders. The cascade SUBMENU ids are needed for
+* the runtime re-labelling.
+*******************************************************************************/
+
+MENU PrgMenu PRELOAD MOVEABLE
+BEGIN
+    SUBMENU "~Game", IDM_SUBMENU_GAME
+    BEGIN
+        MENUITEM "~New Game\tCtrl+N",       IDM_NEW
+        MENUITEM "~Pause Game\tCtrl+P",     IDM_PAUSE
+        MENUITEM "~Quit Game\tCtrl+Q",      IDM_QUIT, , MIA_DISABLED
+        MENUITEM SEPARATOR
+        MENUITEM "E~xit\tCtrl+X",           IDM_EXIT
+    END
+
+    SUBMENU "~Options", IDM_SUBMENU_OPTIONS
+    BEGIN
+        MENUITEM "~Settings...",            IDM_SETTINGS
+        MENUITEM "Define ~Keys...",         IDM_KEYS
+        MENUITEM "~Hiscore...",             IDM_HISCORE_MENU
+        MENUITEM SEPARATOR
+        SUBMENU "~Detail", IDM_SUBMENU_DETAIL
+        BEGIN
+            MENUITEM "~High",               IDM_HIGHDET
+            MENUITEM "~Medium",             IDM_MEDIUMDET
+            MENUITEM "~Low",                IDM_LOWDET
+        END
+        MENUITEM SEPARATOR
+        SUBMENU "~Language", IDM_SUBMENU_LANGUAGE
+        BEGIN
+            MENUITEM "~English",            IDM_LANG_EN
+            MENUITEM "~Espanol",            IDM_LANG_ES
+            MENUITEM "~Nederlands",         IDM_LANG_NL
+            MENUITEM "~Deutsch",            IDM_LANG_DE
+            MENUITEM "~Francais",           IDM_LANG_FR
+            MENUITEM "~Italiano",           IDM_LANG_IT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "~Background Run\tCtrl+B", IDM_BACKGRND
+        MENUITEM "~Frame Controls\tCtrl+F", IDM_FRAME
+        MENUITEM SEPARATOR
+        MENUITEM "Save settings on e~xit",  IDM_SAVEONEXIT
+    END
+
+    SUBMENU "~Help", IDM_SUBMENU_HELP
+    BEGIN
+        MENUITEM "~Using Help",             IDM_HELPUSING, , MIA_DISABLED
+        MENUITEM "~Contents",               IDM_HELPCONTENTS, , MIA_DISABLED
+        MENUITEM "Help ~Index",             IDM_HELPINDEX, , MIA_DISABLED
+        MENUITEM "~How to play",            IDM_HELPHOWTOPLAY, , MIA_DISABLED
+        MENUITEM "~Keys",                   IDM_HELPKEYS, , MIA_DISABLED
+        MENUITEM SEPARATOR
+        MENUITEM "~About STris...",         IDM_ABOUT_MENU
+    END
+END
+
+
+/*******************************************************************************
+* Accelerator table. Letter accelerators are registered for both cases.
+*******************************************************************************/
+
+ACCELTABLE PrgAccel PRELOAD
+BEGIN
+    "n",   IDM_NEW,      CONTROL
+    "N",   IDM_NEW,      CONTROL
+    "p",   IDM_PAUSE,    CONTROL
+    "P",   IDM_PAUSE,    CONTROL
+    "q",   IDM_QUIT,     CONTROL
+    "Q",   IDM_QUIT,     CONTROL
+    "x",   IDM_EXIT,     CONTROL
+    "X",   IDM_EXIT,     CONTROL
+    "b",   IDM_BACKGRND, CONTROL
+    "B",   IDM_BACKGRND, CONTROL
+    "f",   IDM_FRAME,    CONTROL
+    "F",   IDM_FRAME,    CONTROL
+    VK_PAUSE, IDM_PAUSE, VIRTUALKEY
+END
+
+
+/*******************************************************************************
+ * Help table.
+ * NOTE: The Open Watcom resource compiler (wrc 2.0.1) cannot serialize an
+ * OS/2 HELPITEM/HELPSUBTABLE resource correctly - a non-empty subtable
+ * poisons the bind (the resulting .exe has a zero-byte resource object and
+ * the loader rejects it with SYS0193).  The OS/2 help manager therefore
+ * does NOT get a module-level help table here.  F1 / the Help buttons of the
+ * dialogs are dispatched by the application's own WM_HELP handlers
+ * (HelpMain, HelpKeys, HelpHowToPlay, HelpIndex, HelpContents, HelpForHelp)
+ * which call WinHelp(HM_DISPLAY_HELP, panelID, HM_RESOURCEID) directly.
+ * The panel ids (HELP_GENERAL, HELP_KEYS, ...) live in stris_id.h and are
+ * authored in the per-language IPF libraries.
+ *******************************************************************************/
+
+
+/*******************************************************************************
+* About dialog (standard, not translated).
+*******************************************************************************/
+
+DLGTEMPLATE DLG_ABOUT PRELOAD MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "About STris", DLG_ABOUT, 32, 24, 240, 110,, FCF_TITLEBAR|FCF_DLGBORDER
+    BEGIN
+        CTEXT "STris for OS/2",                 -1, 10, 90, 220, 8
+        CTEXT "Version 1.50",                   -1, 10, 78, 220, 8
+        CTEXT "OpenWatcom Release",             -1, 10, 66, 220, 8
+        CTEXT "(c) 1995, 1996, Rene Straub",    -1, 10, 54, 220, 8
+        CTEXT "(c) 2026, OS2World",             -1, 10, 42, 220, 8
+        CTEXT "GNU GPL V3",                     -1, 10, 30, 220, 8
+        DEFPUSHBUTTON "Close", DID_OK,           98, 10, 44, 14, WS_GROUP
+    END
+END
+
+
+/*******************************************************************************
+* Enter-name dialog (shown after a new hiscore)
+*******************************************************************************/
+
+DLGTEMPLATE DLG_ENTERNAME PRELOAD MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "STris - New Hiscore", DLG_ENTERNAME, 13, 160, 194, 83,, FCF_SYSMENU|FCF_TITLEBAR
+    BEGIN
+        DEFPUSHBUTTON "~OK", DID_OK, 72, 5, 50, 14
+        CONTROL "~Help", IDD_HELP, 132, 5, 50, 14, "#3", BS_PUSHBUTTON|BS_HELP|WS_VISIBLE|WS_GROUP|WS_TABSTOP
+
+        CONTROL "", IDD_TEXT_FIELD, 13, 27, 168, 9, "#6", ES_CENTER|ES_AUTOSCROLL|ES_MARGIN|WS_VISIBLE|WS_GROUP|WS_TABSTOP
+        CONTROL "Congratulations you are one", DIA_CONG_T1, 48, 66, 136, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "of the best STris players.",  DIA_CONG_T2, 48, 58, 136, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "Please enter your name right here...", DIA_NAME_PROMPT, 12, 41, 168, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+    END
+END
+
+
+/*******************************************************************************
+* Hiscore dialog
+*******************************************************************************/
+
+DLGTEMPLATE DLG_SHOWHISCORE PRELOAD MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "STris - Hall of fame", DLG_SHOWHISCORE, 8, 49, 301, 166,, FCF_SYSMENU|FCF_TITLEBAR
+    BEGIN
+        DEFPUSHBUTTON "~OK", DID_OK, 116, 4, 68, 14
+        CONTROL "~Help", IDD_HELP, 236, 4, 54, 14, "#3", BS_PUSHBUTTON|BS_HELP|WS_VISIBLE|WS_GROUP|WS_TABSTOP
+
+        CONTROL "These are the best STris players.", IDD_HISCORETEXT, 55, 142, 217, 14, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "14.Helv Bold"
+        CONTROL "Nr.",   IDD_NR,    8, 126, 18, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+        CONTROL "Name",  IDD_NAME,  36, 126, 40, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+        CONTROL "Score", IDD_SCORE, 188, 126, 33, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+        CONTROL "Lines", IDD_LINES, 224, 126, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+        CONTROL "Level", IDD_LEVEL, 256, 126, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+
+        CONTROL "1", IDD_RANK1, 12, 114, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "2", 102, 12, 104, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "3", 103, 12, 94, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "4", 104, 12, 84, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "5", 105, 12, 74, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "6", 106, 12, 64, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "7", 107, 12, 54, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "8", 108, 12, 44, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "9", 109, 12, 34, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "10", 110, 12, 24, 11, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+
+        CONTROL "1", IDD_NAME1, 36, 114, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "2", 112, 36, 104, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "3", 113, 36, 94, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "4", 114, 36, 84, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "5", 115, 36, 74, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "6", 116, 36, 64, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "7", 117, 36, 54, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "8", 118, 36, 44, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "9", 119, 36, 34, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "A", 120, 36, 24, 152, 8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+
+        CONTROL "1", IDD_SCORE1, 178, 114, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "2", 122, 178, 104, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "3", 123, 178, 94, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "4", 124, 178, 84, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "5", 125, 178, 74, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "6", 126, 178, 64, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "7", 127, 178, 54, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "8", 128, 178, 44, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "9", 129, 178, 34, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "A", 130, 178, 24, 43, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+
+        CONTROL "1", IDD_LINES1, 224, 114, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 137, 224, 104, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 138, 224, 94, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 139, 224, 84, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 140, 224, 74, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 141, 224, 64, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 142, 224, 54, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 143, 224, 44, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 144, 224, 34, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 145, 224, 24, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", IDD_LEVEL1, 256, 114, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 150, 256, 104, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 151, 256, 94, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 152, 256, 84, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 153, 256, 74, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 154, 256, 64, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 155, 256, 54, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 156, 256, 44, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 157, 256, 34, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+        CONTROL "1", 158, 256, 24, 29, 8, "#5", SS_TEXT|DT_RIGHT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+    END
+END
+
+
+/*******************************************************************************
+* Options dialog
+*******************************************************************************/
+
+DLGTEMPLATE DLG_OPTIONS PRELOAD MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "STris - Options", DLG_OPTIONS, 51, 86, 216, 148,, FCF_SYSMENU|FCF_TITLEBAR
+    BEGIN
+        DEFPUSHBUTTON "~OK", DID_OK, 8, 4, 51, 14
+        PUSHBUTTON "~Cancel", DID_CANCEL, 64, 4, 51, 14
+        CONTROL "~Help", IDD_HELP, 158, 4, 50, 14, "#3", BS_PUSHBUTTON|BS_HELP|WS_VISIBLE|WS_GROUP|WS_TABSTOP
+
+        CONTROL "Settings", GB_SETTINGS, 8, 80, 200, 64, "#5", SS_GROUPBOX|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+
+            CONTROL "~Sound", IDD_SOUND, 16, 124, 50, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "~Grid", IDD_GRID, 16, 114, 50, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "~Next Piece", IDD_NEXTPIECE, 16, 104, 88, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "~Rotate clockwise", IDD_ROTATE, 16, 94, 100, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "Remain ~paused", IDD_REMAINPAUSED, 16, 84, 100, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+
+            CONTROL "", IDD_PALETTE, 116, 112, 80, 12, "#32", SPBS_MASTER | SPBS_READONLY | SPBS_JUSTLEFT | SPBS_FASTSPIN | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "Palette", DLG_PALETTE, 116, 126, 45, 8, "#5", SS_TEXT | DT_LEFT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            CONTROL "So~lid colors", IDD_SOLID, 116, 100, 80, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+
+        CONTROL "Difficulty", GB_DIFFICULTY, 8, 26, 200, 50, "#5", SS_GROUPBOX | DT_LEFT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+
+            CONTROL "", IDD_SPEEDSLIDER, 16, 54, 77, 8, "#8", WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "", IDD_LEVELSLIDER, 16, 42, 77, 8, "#8", WS_VISIBLE | WS_GROUP | WS_TABSTOP
+            CONTROL "Speed", DLG_SPEED, 120, 54, 45, 8, "#5", SS_TEXT | DT_LEFT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            CONTROL "Startlevel", DLG_STARTLEVEL, 120, 42, 45, 8, "#5", SS_TEXT | DT_LEFT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            CONTROL "1", IDD_SPEEDTEXT, 96, 54, 13, 8, "#5", SS_TEXT | DT_RIGHT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            CONTROL "2", IDD_LEVELTEXT, 96, 42, 13, 8, "#5", SS_TEXT | DT_RIGHT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            CONTROL "Start with ~extra squares", IDD_EXTRASQUARES, 16, 30, 160, 10, "#3", BS_AUTOCHECKBOX | WS_VISIBLE | WS_GROUP | WS_TABSTOP
+    END
+END
+
+
+/*******************************************************************************
+* Key dialog
+*******************************************************************************/
+
+DLGTEMPLATE DLG_KEY PRELOAD MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG "STris - Key Bindings", DLG_KEY, 51, 86, 240, 110,, FCF_SYSMENU|FCF_TITLEBAR
+    BEGIN
+        DEFPUSHBUTTON "~OK", DID_OK, 8, 4, 44, 14
+        PUSHBUTTON "~Cancel", DID_CANCEL, 56, 4, 44, 14
+        PUSHBUTTON "~Default", IDD_DEFAULT, 104, 4, 44, 14
+        CONTROL "~Help", IDD_HELP, 188, 4, 44, 14, "#3", BS_PUSHBUTTON|BS_HELP|WS_VISIBLE|WS_GROUP|WS_TABSTOP
+
+        CONTROL "Keys", GB_KEYS, 8, 24, 224, 82, "#5", SS_GROUPBOX | DT_LEFT | DT_TOP | DT_MNEMONIC | WS_VISIBLE | WS_GROUP
+            PRESPARAMS PP_FONTNAMESIZE "10.Helv Bold"
+
+            PUSHBUTTON "<", IDD_KEYLEFT,     18, 80, 20, 14
+            PUSHBUTTON ">", IDD_KEYRIGHT,    18, 65, 20, 14
+            PUSHBUTTON "v", IDD_KEYDROP,     18, 50, 20, 14
+            PUSHBUTTON "+", IDD_KEYROTATE,  124, 80, 20, 14
+            PUSHBUTTON "-", IDD_KEYROTATE2, 124, 65, 20, 14
+
+            CONTROL "CURSOR LEFT", IDD_TEXTLEFT, 46,77,70,14, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            CONTROL "CURSOR RIGHT", IDD_TEXTRIGHT,46,62,70,14, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            CONTROL "CURSOR DOWN", IDD_TEXTDROP, 46,47,70,14, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            CONTROL "CURSOR UP", IDD_TEXTROTATE,  152,77,70,14, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+            CONTROL "<none>", IDD_TEXTROTATE2,     152,62,70,14, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+
+            CONTROL "Select the function you wish to change.", IDD_KEYTEXT1, 18,36,200,8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+                PRESPARAMS PP_FONTNAMESIZE "8.Helv"
+
+            CONTROL "", IDD_KEYTEXT2, 18,28,200,8, "#5", SS_TEXT|DT_LEFT|DT_TOP|DT_MNEMONIC|WS_VISIBLE|WS_GROUP
+                PRESPARAMS PP_FONTNAMESIZE "8.Helv"
+                PRESPARAMS PP_FOREGROUNDCOLOR 0xFF0000
+    END
+END
+
+
+/*******************************************************************************
+* Bitmaps and icon
+*******************************************************************************/
+
+BITMAP ToMBitmap PRELOAD src\Graphics\Label2.bmp
+
+ICON PrgIcon PRELOAD src\Graphics\STris.ico

@@ -1,23 +1,12 @@
 # Build output - never commit
 bin/*
 
-# Editor / OS droppings
+# Generated / scratch files
 *.obj
 *.res
+*.map
 *.err
 *.log
-compile-wat.log
-
-# OS/2 temporary files
 *.tmp
+*.cfg
 *~
-*.BAK
-*.dsk
-*.map
-*.dll
-
-# Tools scratch
-tools/guest-*.cmd
-tools/pidprobe.obj
-tools/pidprobe.exe
-tools/det-pid.txt
